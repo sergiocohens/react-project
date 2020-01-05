@@ -41,8 +41,9 @@ const addNewUser = async(req,res) =>{
 
 
 const getProfilePic = async(req,res) => {
+  let id = req.params.id
   try {
-    let response = await db.any(`SELECT img_url FROM users WHERE id = ${req.params.id}`)
+    let response = await db.any(`SELECT img_url FROM users WHERE id = $1`, id)
     res.json({
       status: "success",
       message: req.get('host') + req.originalUrl,
