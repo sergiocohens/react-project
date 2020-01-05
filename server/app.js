@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/tags', tagsRouter);
-app.use('/image', imagesRouter)
+app.use('/images', imagesRouter)
 app.use('/imageTags', imageTagsRouter)
 
 
