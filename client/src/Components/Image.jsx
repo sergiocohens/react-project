@@ -18,4 +18,4 @@ class Image extends React.Component {
 }
 
 
-export default Login;
+export default Image;
