@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-class Login extends React.Component {
+class Image extends React.Component {
  render(){
     return (
         <div className="App">
@@ -11,4 +11,4 @@ class Login extends React.Component {
  }
 }
 
-export default Login;
+export default Image;
