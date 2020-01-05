@@ -3,14 +3,7 @@ var router = express.Router();
 const db = require('./pgExport');
 
 
-/* GET users listing. */
-// router.get('/', function (req, res, next) {
-//   res.send('respond with a resource');
-// });
-
-
-
-const middleWare = async (req, res, next) => {
+const getAllUsers = async (req, res, next) => {
   try {
     let response = await db.any("SELECT * FROM users;");
     res.json({
@@ -28,6 +21,26 @@ const middleWare = async (req, res, next) => {
 }
 
 
+const addNewUser = async(req,res) =>{
+  try {
+    let insertQuery = `
+  INSERT INTO users(email, img_url)
+  VALUES($1, $2);
+  `
+    await db.none(insertQuery, [req.body.email, req.body.img_url]);
+    res.json({
+      body: req.body,
+      message: `User registration was successful!`
+    });
+  } catch (error) {
+    res.json({
+      message: `There was an error!`
+    });
+  }
+}
 
-router.get("/", middleWare); // get all users
+
+
+router.get("/", getAllUsers); // get all users
+router.post("/", addNewUser)
 module.exports = router;
