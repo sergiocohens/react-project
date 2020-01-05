@@ -14,17 +14,16 @@ class Profile extends React.Component {
  async componentDidMount() {
    let response = await axios.get(`http://localhost:3001/users/${this.state.loggedId}`)
    this.setState({
-     imgUrl: response.body.img_url
+     imgUrl: response.data.body[0].img_url
    })
  }
 
  render(){
-    console.log(this.state.imgUrl)
     return (
         <div className="App">
             <h1>Profile</h1>
             <img src={this.state.imgUrl} alt=''></img>
-            <p>Welcome {this.state.loggedUser}</p>
+            <p>Welcome {this.state.loggedUser}!</p>
         </div>
       );
  }
