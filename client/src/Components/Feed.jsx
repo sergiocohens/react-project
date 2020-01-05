@@ -16,14 +16,15 @@ class Feed extends Component {
         const { hashtag } = this.state
         let url = `http://localhost:3001/tags/${hashtag}`
         try {
-            let imageByTag = await axios.get(url).then(res => {return res.data})
+            let imageByTag = await axios.get(url).then((res => {return res.data.imgSrc}))
+            console.log(imageByTag)
         }
         catch(err) {
-            res.send("Cannot do! Error:", err)
+            console.log("error:", err)
         }
     }
     render () {
-        const { hashtag } = this.state;
+        // const { hashtag } = this.state;
         return (
             <div className = "feed">
                 <div className = "header">
