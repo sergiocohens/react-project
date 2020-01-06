@@ -7,13 +7,16 @@ router.get('/:hashtag', async (req, res) => {
     console.log(hashtagName)
     try {
         let imgByHashtag = await db.any(
-        `SELECT img_src FROM images 
-        INNER JOIN image_tags ON images.img_src = 
+        `SELECT * FROM image_tags
+        INNER JOIN images ON images.id = image_tags.img_id
+        INNER JOIN tags ON tags.id = image_tags.tag_id
         WHERE tag_name = $1`, hashtagName);
-        res.send(imgByHashtag)
+        res.json({
+            imgArr: imgByHashtag
+        })
     }
     catch(err) {
-        res.send(err)
+        res.send("Hashtag does not exist")
     }
 })
 
