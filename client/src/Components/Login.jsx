@@ -120,7 +120,7 @@ class Login extends React.Component {
                 <div className="App">
                     <form onSubmit={this.handleSubmit}>
                         <input className= "loginInput" onChange={this.handleEmailInput} type="text" />
-                        <button clasName = "loginLogin" onClick={this.handleLogin}>Login</button>
+                        <button className = "loginLogin" onClick={this.handleLogin}>Login</button>
                         <button className= "loginRegister" onClick = {this.handleRegister}>Register</button>
                     </form>
                 </div>
@@ -137,7 +137,7 @@ class Login extends React.Component {
                     <div className="App">
                         <form onSubmit={this.handleSubmit}>
                                 <input className= "loginInput" onChange={this.handleEmailInput} type="text" />
-                                <button clasName = "loginLogin" onClick={this.handleLogin}>Login</button>
+                                <button className = "loginLogin" onClick={this.handleLogin}>Login</button>
                                 <button className= "loginRegister"  onClick = {this.handleRegister}>Register</button>
                             </form>
                         <p>Email Does Not Exist. Try again.</p>
@@ -151,7 +151,7 @@ class Login extends React.Component {
                 <div className="App">
                     <form onSubmit={this.handleSubmit}>
                             <input className= "loginInput" onChange={this.handleEmailInput} type="text" />
-                            <button clasName = "loginLogin" onClick={this.handleLogin}>Login</button>
+                            <button className = "loginLogin" onClick={this.handleLogin}>Login</button>
                             <button className= "loginRegister"  onClick = {this.handleRegister}>Register</button>
                         </form>
                     <p>Email is Already Registered. </p>
