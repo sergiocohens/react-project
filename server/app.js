@@ -4,9 +4,22 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 const multer = require ('multer');
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "./public/images")
+    },
+    filename: (req, file, cb) => {
+      let name = Date.now() + "-" + file.originalname
+      cb(null, name)
+    }
+  })
+
 const upload = multer ({
-    dest: "./public/images"
+    storage: storage
 })
+
+
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -32,6 +45,12 @@ app.use('/imageTags', imageTagsRouter)
 app.post('/upload', upload.single("image"), (req,res,next) => {
     console.log('req.file',req.file)
     console.log('req.body',req.body)
+    
+    let imageUrl = "http://localhost:3001/" + req.file.path.replace('public/', '')
+    res.json({
+        imageUrl: imageUrl,
+        message: "file uploaded"
+})
 })
 
 
