@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-const multer = require ('multer');
 
 
 
@@ -9,20 +8,20 @@ class Image extends React.Component {
         imageUrl: "",
         imageFile: null
       }
-    
+
       handleFileInput = (event) => {
         console.log('file changed')
         this.setState({
           imageFile: event.target.files[0]
         })
       }
-    
+
       handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         const data = new FormData()
         data.append('image', this.state.imageFile)
-    
+
         try {
           const res = await axios.post('http://localhost:3001/upload', data)
           console.log(res.data)
@@ -33,7 +32,7 @@ class Image extends React.Component {
           console.error(err)
         }
       }
-    
+
       render() {
         return (
           <div className="App">
