@@ -3,6 +3,10 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const multer = require ('multer');
+const upload = multer ({
+    dest: "./public/images"
+})
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -25,6 +29,10 @@ app.use('/users', usersRouter);
 app.use('/tags', tagsRouter);
 app.use('/images', imagesRouter)
 app.use('/imageTags', imageTagsRouter)
+app.post('/upload', upload.single("image"), (req,res,next) => {
+    console.log('req.file',req.file)
+    console.log('req.body',req.body)
+})
 
 
 
