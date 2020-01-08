@@ -10,13 +10,13 @@ const getAllUsers = async (req, res, next) => {
       status: "success",
       message: req.get('host') + req.originalUrl,
       body: response
-    });
+    })
   } catch (error) {
-    log(error);
+    console.log(error)
     res.status(500).json({
       status: "fail",
       message: "Error: something went wrong"
-    });
+    })
   }
 }
 
@@ -31,16 +31,52 @@ const addNewUser = async(req,res) =>{
     res.json({
       body: req.body,
       message: `User registration was successful!`
-    });
+    })
   } catch (error) {
     res.json({
       message: `There was an error!`
-    });
+    })
   }
 }
 
 
+const getProfilePic = async(req,res) => {
+  let id = req.params.id
+  try {
+    let response = await db.any(`SELECT img_url FROM users WHERE id = $1`, id)
+    res.json({
+      status: "success",
+      message: req.get('host') + req.originalUrl,
+      body: response
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      status: "fail",
+      message: "Error: something went wrong"
+    })
+  }
+}
+
+const changeProfilePic = async(req,res) => {
+  let id = req.params.id
+  try {
+    await db.none('UPDATE users SET img_url = $1 WHERE id = $2', [req.body.imgUrl, id])
+    res.json({
+      body: req.body,
+      message: 'Profile picture changed!'
+    })
+  } catch (error) {
+    console.log(error)
+    res.json({
+      message:'There was an error!'
+    })
+  }
+}
 
 router.get("/", getAllUsers); // get all users
 router.post("/", addNewUser)
+router.get("/profilepic/:id", getProfilePic)
+router.put("/profilepic/:id", changeProfilePic)
+
 module.exports = router;
