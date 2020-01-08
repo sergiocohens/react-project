@@ -58,8 +58,25 @@ const getProfilePic = async(req,res) => {
   }
 }
 
+const changeProfilePic = async(req,res) => {
+  let id = req.params.id
+  try {
+    await db.none('UPDATE users SET img_url = $1 WHERE id = $2', [req.body.imgUrl, id])
+    res.json({
+      body: req.body,
+      message: 'Profile picture changed!'
+    })
+  } catch (error) {
+    console.log(error)
+    res.json({
+      message:'There was an error!'
+    })
+  }
+}
+
 router.get("/", getAllUsers); // get all users
 router.post("/", addNewUser)
-router.get("/:id", getProfilePic)
+router.get("/profilepic/:id", getProfilePic)
+router.put("/profilepic/:id", changeProfilePic)
 
 module.exports = router;

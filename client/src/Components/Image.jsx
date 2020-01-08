@@ -3,7 +3,6 @@ import axios from 'axios';
 
 
 
-
 class Image extends React.Component {
     state = {
         imageUrl: "",
@@ -11,8 +10,7 @@ class Image extends React.Component {
        
       }
 
-      
-    
+
       handleFileInput = (event) => {
         console.log('file changed')
         this.setState({
@@ -28,6 +26,7 @@ class Image extends React.Component {
         for(var x = 0; x<this.state.imageFile.length; x++){
         data.append('file', this.state.imageFile[x])
         }
+
         try {
           const res = await axios.post('http://localhost:3001/upload', data)
           console.log(res.data)
@@ -40,7 +39,7 @@ class Image extends React.Component {
           console.error(err)
         }
       }
-    
+
       render() {
         return (
           <div className="App">
