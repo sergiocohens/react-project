@@ -6,8 +6,6 @@ class Profile extends React.Component {
    super(props)
    
    this.state = {
-    //  loggedUser: 'serg@gmail.com',
-     loggedId:null,
      imgUrl: '',
      imgFile: null,
      exist: true
@@ -15,7 +13,6 @@ class Profile extends React.Component {
  }
 
  async componentDidMount() {
-    console.log("Profile comp mounted test", this.props)
         let response = await axios.get(`http://localhost:3001/users/profilepic/${this.props.id}` )
         this.setState({
           imgUrl: response.data.body[0].img_url
@@ -55,7 +52,6 @@ class Profile extends React.Component {
  }
 
  render(){
-    console.log("Profile comp rendered")
     const {email} = this.props
 
     return (

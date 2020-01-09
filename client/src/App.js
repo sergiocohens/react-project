@@ -76,7 +76,6 @@ class App extends React.Component {
 
     try {
       const response = await axios.get(getAllUsers)
-      console.log(response)
       if (response.data) {
         this.setState({
           exist: true,
@@ -111,20 +110,18 @@ class App extends React.Component {
 
 
 
-
   render() {
     const { email, exist, id, button, redirected } = this.state
-    console.log("this is the state", this.state)
   if (button === "login") {
       if (exist === true) {
         return (
           <div className="App">
             <nav>
-              {/* <Link to={`"/feed/${id}`}></Link>{" "} */}
+              <Link to={`"/feed/${id}`}></Link>{" "}
               <Link to={`"/feed/${id}`} />{" "}
 
             </nav>
-            {/* <Switch> */}
+            <Switch>
             <Route path="/feed/:id" render={
               (routeProps) => {
                 return (
@@ -132,7 +129,7 @@ class App extends React.Component {
                 )
               }
             } />
-            {/* </Switch> */}
+            </Switch>
             <Redirect to={`/feed/${id}`} />
 
           </div>
@@ -169,7 +166,7 @@ class App extends React.Component {
               <Link to={`"/profile/${id}`}></Link>{" "}
             </nav>
 
-            {/* <Switch>  */}
+            <Switch> 
             <Route path="/profile/:id" render={
               (routeProps) => {
                 return (
@@ -178,7 +175,7 @@ class App extends React.Component {
                 )
               }
             } />
-            {/* </Switch>  */}
+            </Switch> 
             <Redirect to={`/profile/${id}`} />
           </div>
         );
@@ -190,7 +187,6 @@ class App extends React.Component {
             <input className="loginInput" onChange={this.handleEmailInput} type="text" />
             <button className="loginLogin" onClick={this.handleLogin}>Login</button>
             <button className="loginRegister" onClick={this.handleRegister}>Register</button>
-            {/* <button onClick={this.handleReset}>Reset</button> */}
           </form>
         </div>
       );
