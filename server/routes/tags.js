@@ -12,11 +12,15 @@ router.get('/:hashtag', async (req, res) => {
         INNER JOIN tags ON tags.id = image_tags.tag_id
         WHERE tag_name = $1`, hashtagName);
         res.json({
+            sucess: true,
             imgArr: imgByHashtag
         })
     }
     catch(err) {
-        res.send("Hashtag does not exist")
+        res.send({
+            success: false,
+            error: "Hashtag does not exist"
+        })
     }
 })
 
