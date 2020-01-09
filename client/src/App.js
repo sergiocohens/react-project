@@ -18,7 +18,7 @@ class App extends React.Component {
       id: null,
       button: null,
       redirected: false,
-      defaultPhoto: "https://cdn4.iconfinder.com/data/icons/education-circular-1-1/96/40-512.png",
+      defaultPhoto: "http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png",
     }
 
   }
@@ -149,7 +149,7 @@ class App extends React.Component {
                 }
               } />
             {/* </Switch> */}
-            <Redirect to={`/feed/:${id}`} />
+            <Redirect to={`/feed/${id}`} />
 
           </div>
         );
@@ -182,10 +182,10 @@ class App extends React.Component {
         return (
           <div className="App">
             <nav>
-              <Link to={`"/profile/:${id}`}></Link>{" "}
+              <Link to={`"/profile/${id}`}></Link>{" "}
             </nav>
 
-             <Switch> 
+             {/* <Switch>  */}
               <Route path="/profile/:id" render={
                 (routeProps) => {
                   return (
@@ -194,8 +194,8 @@ class App extends React.Component {
                   )
                 }
               } />
-             </Switch> 
-            <Redirect to={`/profile/:${id}`} />
+             {/* </Switch>  */}
+            <Redirect to={`/profile/${id}`} />
           </div>
         );
       }
