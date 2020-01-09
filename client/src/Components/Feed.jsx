@@ -1,5 +1,6 @@
 import React, { Component} from 'react';
 import axios from 'axios';
+import Image from './Image';
 import '../App.css';
 
 class Feed extends Component {
@@ -24,7 +25,7 @@ class Feed extends Component {
             })
         }
         catch(err) {
-            console.log("Error, hashtag does not exist")
+            console.log("Error, something went wrong. ", err)
         }
     }
     render () {
