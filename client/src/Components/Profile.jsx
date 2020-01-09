@@ -14,23 +14,23 @@ class Profile extends React.Component {
    }
  }
 
-//  async componentDidMount() {
-//     console.log("Profile comp mounted", this.props)
-//         let response = await axios.get(`http://localhost:3001/users/profilepic/${this.props.id}` )
-//         this.setState({
-//           imgUrl: response.data.body[0].img_url
-//         })
-//  }
-
- async componentDidUpdate(prevProps) {
-     console.log("component did update triggered")
-     if(this.props.id !== prevProps.id) {
+ async componentDidMount() {
+    console.log("Profile comp mounted test", this.props)
         let response = await axios.get(`http://localhost:3001/users/profilepic/${this.props.id}` )
         this.setState({
           imgUrl: response.data.body[0].img_url
         })
-     }
  }
+
+//  async componentDidUpdate(prevProps) {
+//      console.log("component did update triggered")
+//      if(this.props.id !== prevProps.id) {
+//         let response = await axios.get(`http://localhost:3001/users/profilepic/${this.props.id}` )
+//         this.setState({
+//           imgUrl: response.data.body[0].img_url
+//         })
+//      }
+//  }
 
  handleFileInput = (event) => {
    this.setState({
@@ -56,12 +56,13 @@ class Profile extends React.Component {
 
  render(){
     console.log("Profile comp rendered")
+    const {email} = this.props
 
     return (
         <div className="App">
             <h1>Profile</h1>
             <img src={this.state.imgUrl} alt=''></img>
-            <p>Welcome {this.props.email}!</p>
+            <p>Welcome {email}!</p>
             <form onSubmit={this.handleSubmit}>
               <input type="file" onChange={this.handleFileInput} />
               <input type="submit" value="Change Pic" />
