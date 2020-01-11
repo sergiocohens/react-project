@@ -36,8 +36,19 @@
     transform: rotate(360deg);
   }
 }
-.feed {
+
+.images > img {
+  margin: auto;
   display: flex;
   flex-flow: column;
-  width: 80%;
+  width: 40%;
+  height: 30%;
+  padding: 10px;
+}
+.navBar {
+  float: left;
+}
+.profilePic {
+  width: 360px;
+  height: 360px;
 }
