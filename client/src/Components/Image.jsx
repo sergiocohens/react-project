@@ -6,7 +6,7 @@ import axios from 'axios';
 class Image extends React.Component {
     state = {
         imageUrl: "",
-        imageFile: [],
+        imageFile: null
        
       }
 
@@ -23,9 +23,8 @@ class Image extends React.Component {
         event.preventDefault();
     
         const data = new FormData()
-        for(var x = 0; x<this.state.imageFile.length; x++){
-        data.append('file', this.state.imageFile[x])
-        }
+        data.append('image', this.state.imageFile)
+        
 
         try {
           const res = await axios.post('http://localhost:3001/upload', data)
