@@ -44,8 +44,6 @@ app.use('/tags', tagsRouter);
 app.use('/images', imagesRouter)
 app.use('/imageTags', imageTagsRouter)
 app.post('/upload', upload.single, (req,res,next) => {
-    console.log('req.file',req.file)
-    console.log('req.body',req.body)
     
     let imageUrl = "http://localhost:3001/" + req.file.path.replace('public/', '')
     res.json({
