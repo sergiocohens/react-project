@@ -1,14 +1,13 @@
 import React from 'react'
 import axios from 'axios'
+import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom'
 
 class Profile extends React.Component {
  constructor(props) {
    super(props)
-   
    this.state = {
      imgUrl: '',
      imgFile: null,
-     exist: true
    }
  }
 
@@ -18,16 +17,6 @@ class Profile extends React.Component {
           imgUrl: response.data.body[0].img_url
         })
  }
-
-//  async componentDidUpdate(prevProps) {
-//      console.log("component did update triggered")
-//      if(this.props.id !== prevProps.id) {
-//         let response = await axios.get(`http://localhost:3001/users/profilepic/${this.props.id}` )
-//         this.setState({
-//           imgUrl: response.data.body[0].img_url
-//         })
-//      }
-//  }
 
  handleFileInput = (event) => {
    this.setState({
@@ -48,23 +37,29 @@ class Profile extends React.Component {
    } catch (err) {
      console.error(err)
    }
+ }
 
+ handleRedirect(){
+     this.setState({
+         redirect: true
+     })
  }
 
  render(){
-    const {email} = this.props
-
-    return (
-        <div className="App">
-            <h1>Profile</h1>
-            <img src={this.state.imgUrl} alt=''></img>
-            <p>Welcome {email}!</p>
-            <form onSubmit={this.handleSubmit}>
-              <input type="file" onChange={this.handleFileInput} />
-              <input type="submit" value="Change Pic" />
-            </form>
-        </div>
-      );
+    const {email, id } = this.props
+  
+        return (
+            <div className="App">
+                <h1>Profile</h1>
+                <img src={this.state.imgUrl} alt=''></img>
+                <p>Welcome {email}!</p>
+                <form onSubmit={this.handleSubmit}>
+                  <input type="file" onChange={this.handleFileInput} />
+                  <input type="submit" value="Change Pic" />
+                </form>
+                <Link to = {`/feed/${this.props.id}` }>Feed</Link>
+            </div>
+          );
  }
 }
 
