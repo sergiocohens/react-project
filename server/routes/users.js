@@ -12,7 +12,6 @@ const getAllUsers = async (req, res, next) => {
       body: response
     })
   } catch (error) {
-    console.log(error)
     res.status(500).json({
       status: "fail",
       message: "Error: something went wrong"
@@ -39,6 +38,23 @@ const addNewUser = async(req,res) =>{
   }
 }
 
+const getUserEmail = async(req,res) =>{
+  let email = req.params.email
+  try{
+    let response = await db.one('SELECT *  FROM users WHERE email = $1', email)
+    res.json({
+      status: "success",
+      message: req.get('host') + req.originalUrl,
+      body: response
+    })
+  }catch(error){
+    res.status(500).json({
+      status: "fail",
+      message: "Error: something went wrong"
+    })
+  }
+}
+
 
 const getProfilePic = async(req,res) => {
   let id = req.params.id
@@ -50,7 +66,6 @@ const getProfilePic = async(req,res) => {
       body: response
     })
   } catch (error) {
-    console.log(error)
     res.status(500).json({
       status: "fail",
       message: "Error: something went wrong"
@@ -67,7 +82,6 @@ const changeProfilePic = async(req,res) => {
       message: 'Profile picture changed!'
     })
   } catch (error) {
-    console.log(error)
     res.json({
       message:'There was an error!'
     })
@@ -76,6 +90,7 @@ const changeProfilePic = async(req,res) => {
 
 router.get("/", getAllUsers); // get all users
 router.post("/", addNewUser)
+router.get("/:email", getUserEmail)
 router.get("/profilepic/:id", getProfilePic)
 router.put("/profilepic/:id", changeProfilePic)
 

@@ -1,35 +1,21 @@
 import React from 'react'
 import axios from 'axios'
+import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom'
 
 class Profile extends React.Component {
  constructor(props) {
    super(props)
-   
    this.state = {
-    //  loggedUser: 'serg@gmail.com',
-     loggedId:null,
      imgUrl: '',
      imgFile: null,
-     exist: true
    }
  }
 
-//  async componentDidMount() {
-//     console.log("Profile comp mounted", this.props)
-//         let response = await axios.get(`http://localhost:3001/users/profilepic/${this.props.id}` )
-//         this.setState({
-//           imgUrl: response.data.body[0].img_url
-//         })
-//  }
-
- async componentDidUpdate(prevProps) {
-     console.log("component did update triggered")
-     if(this.props.id !== prevProps.id) {
+ async componentDidMount() {
         let response = await axios.get(`http://localhost:3001/users/profilepic/${this.props.id}` )
         this.setState({
           imgUrl: response.data.body[0].img_url
         })
-     }
  }
 
  handleFileInput = (event) => {
@@ -51,23 +37,30 @@ class Profile extends React.Component {
    } catch (err) {
      console.error(err)
    }
+ }
 
+ handleRedirect(){
+     this.setState({
+         redirect: true
+     })
  }
 
  render(){
-    console.log("Profile comp rendered")
+    const {email, id } = this.props
+  
+        return (
+            <div className="App">
+                <h1>Profile</h1>
+                <img className="profilePic" src={this.state.imgUrl} alt=''></img>
+                <p>Welcome {email}!</p>
+                <form onSubmit={this.handleSubmit}>
+                  <input type="file" onChange={this.handleFileInput} />
+                  <input type="submit" value="Change Pic" />
+                </form>
+                <Link to = {`/feed/${this.props.id}` }>Feed</Link>
+            </div>
+          );
 
-    return (
-        <div className="App">
-            <h1>Profile</h1>
-            <img src={this.state.imgUrl} alt=''></img>
-            <p>Welcome {this.props.email}!</p>
-            <form onSubmit={this.handleSubmit}>
-              <input type="file" onChange={this.handleFileInput} />
-              <input type="submit" value="Change Pic" />
-            </form>
-        </div>
-      );
  }
 }
 
