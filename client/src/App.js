@@ -36,12 +36,12 @@ class App extends React.Component {
 
   handleLogin = async () => {
     const { email, exist, id, button } = this.state
-    let getAllUsers = `http://localhost:3001/users/${email}`
+    let checkIfEmailExist = `http://localhost:3001/users/${email}`
 
-   
+
     try {
 
-      const response = await axios.get(getAllUsers)
+      const response = await axios.get(checkIfEmailExist)
       let responseData = response.data.body
 
       if (responseData) {
@@ -57,11 +57,8 @@ class App extends React.Component {
       this.setState({
         button: "login",
       })
-  
+
     }
-
-
-
   }
 
 
@@ -69,13 +66,9 @@ class App extends React.Component {
 
   handleRegister = async () => {
     const { email, exist, id, button, defaultPhoto } = this.state
-    let getAllUsers = `http://localhost:3001/users/${email}`
-    // this.setState({
-    //   button: "register"
-    // })
-
+    let checkIfEmailExist = `http://localhost:3001/users/${email}`
     try {
-      const response = await axios.get(getAllUsers)
+      const response = await axios.get(checkIfEmailExist)
       if (response.data) {
         this.setState({
           exist: true,
@@ -84,14 +77,17 @@ class App extends React.Component {
     } catch (error) {
       console.log("Error", error)
     }
+
+
+
     if (exist === false) {
       let addNewUser = "http://localhost:3001/users/"
       try {
-        const postNewUser = await axios.post(addNewUser, { email: email, img_url: defaultPhoto })
-        const updatedUsers = await axios.get(getAllUsers)
-        const updatedUsersData = updatedUsers.data.body
+        const postNewEmailData = await axios.post(addNewUser, { email: email, img_url: defaultPhoto })
+        const updatedNewUserEmailInfo= await axios.get(checkIfEmailExist)
+        const getUpdatedNewUsersEmailData = updatedNewUserEmailInfo.data.body
         this.setState({
-          id: updatedUsersData.id,
+          id: getUpdatedNewUsersEmailData.id,
           redirected: true,
           button: "register"
         })
@@ -99,12 +95,10 @@ class App extends React.Component {
       catch (error) {
         console.log("Error", error)
         this.setState({
-      button: "register"
-    })
+          button: "register"
+        })
       }
     }
-
-
   }
 
 
@@ -112,25 +106,43 @@ class App extends React.Component {
 
   render() {
     const { email, exist, id, button, redirected } = this.state
-  if (button === "login") {
+    if (button === "login") {
       if (exist === true) {
         return (
           <div className="App">
             <nav>
+
+              <Link to={`"/profile/${id}`}></Link>{" "}
               <Link to={`"/feed/${id}`}></Link>{" "}
-              <Link to={`"/feed/${id}`} />{" "}
+
+
+
 
             </nav>
             <Switch>
-            <Route path="/feed/:id" render={
-              (routeProps) => {
-                return (
-                  <Feed email={email} id={id} />
-                )
-              }
-            } />
+              <Route path="/feed/:id" render={
+                (routeProps) => {
+                  return (
+                    <Feed email={email} id={id} />
+                  )
+                }
+              } />
+
+              <Route path="/profile/:id" render={
+                (routeProps) => {
+                  return (
+                    <Profile email={email} id={id} />
+
+                  )
+                }
+
+              } />
+
+
+
+
             </Switch>
-            <Redirect to={`/feed/${id}`} />
+            <Redirect to={`/feed/${id}`} ç />
 
           </div>
         );
@@ -164,18 +176,27 @@ class App extends React.Component {
           <div className="App">
             <nav>
               <Link to={`"/profile/${id}`}></Link>{" "}
+              <Link to={`"/feed/${id}`}></Link>{" "}
             </nav>
 
-            <Switch> 
-            <Route path="/profile/:id" render={
-              (routeProps) => {
-                return (
-                  <Profile email={email} id={id} />
+            <Switch>
+              <Route path="/profile/:id" render={
+                (routeProps) => {
+                  return (
+                    <Profile email={email} id={id} />
 
-                )
-              }
-            } />
-            </Switch> 
+                  )
+                }
+
+              } />
+              <Route path="/feed/:id" render={
+                (routeProps) => {
+                  return (
+                    <Feed email={email} id={id} />
+                  )
+                }
+              } />
+            </Switch>
             <Redirect to={`/profile/${id}`} />
           </div>
         );
@@ -183,7 +204,8 @@ class App extends React.Component {
     } else if (redirected === false) {
       return (
         <div className="App">
-          <form onSubmit={this.handleSubmit}>
+
+          <form className ="app_form"onSubmit={this.handleSubmit}>
             <input className="loginInput" onChange={this.handleEmailInput} type="text" />
             <button className="loginLogin" onClick={this.handleLogin}>Login</button>
             <button className="loginRegister" onClick={this.handleRegister}>Register</button>
@@ -193,9 +215,9 @@ class App extends React.Component {
     }
   }
 
-    
 
-  
+
+
 
 }
 
