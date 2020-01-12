@@ -12,6 +12,9 @@ class Feed extends Component {
         }
         this.ref = React.createRef();
     }
+    componentDidMount() {
+        this.getAllImages();
+    }
     handleInputChange = (e) => {
         this.setState({
             hashtag: e.target.value
@@ -24,7 +27,6 @@ class Feed extends Component {
         try {
             let imageByTag = await axios.get(url).then((res => { return res.data.imgArr }))
             let urlArr = imageByTag.map(elem => { return elem.img_src });
-            console.log(imageByTag)
             this.setState({
                 urls: urlArr,
             })
@@ -33,10 +35,25 @@ class Feed extends Component {
             console.log("Error, something went wrong. ", err)
         }
     }
+    getAllImages = async () => {
+        let url = `http://localhost:3001/images/all`;
+        try {
+            let allImages = await axios.get(url).then((res) => {return res.data.payload})
+            let allImagesUrls = allImages.map((elem) => {
+                return elem.img_src;
+            })
+            this.setState({
+                urls: allImagesUrls
+            })
+        }
+        catch(err) {
+            console.log("error:", err)
+        }
+    }
     render() {
         const { urls, hashtag } = this.state;
         let images = urls.map((elem) => {
-            return <img src={elem} alt={hashtag}></img>
+            return <img src={elem} alt=""></img>
         })
         return (
             <div className="feed">
