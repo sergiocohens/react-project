@@ -14,16 +14,15 @@ class Image extends React.Component {
       }
     }
 
-    async componentDidMount() {
-      let response = await axios.get(`http://localhost:3001/users/${this.props.loggedUser}` )
-      this.setState({
-        imageUrl: response.data.body[0].img_url
-      })
-}
+//     async componentDidMount() {
+//       let response = await axios.get(`http://localhost:3001/users/${this.state.loggedUser}` )
+//       this.setState({
+//         imageUrl: response.data.body[0].img_url
+//       })
+// }
 
 
       handleFileInput = (event) => {
-        console.log('file changed')
         this.setState({
           imageFile: event.target.files[0],
         //   loaded: 0
@@ -32,7 +31,6 @@ class Image extends React.Component {
     
       handleSubmit = async (event) => {
         event.preventDefault();
-    
         const data = new FormData()
        //for(var x = 0; x<this.state.imageFile.length; x++){
         data.append('image', this.state.imageFile)
@@ -40,7 +38,7 @@ class Image extends React.Component {
 
         try {
           const res = await axios.post('http://localhost:3001/upload', data)
-          axios.put(`http://localhost:3001/images/posts`, {imageUrl: res.body.img_src})
+          axios.put(`http://localhost:3001/images/post`, {img_src: res.data.imageUrl, users_id: this.state.loggedUser})
           this.setState({
             imageUrl: res.data.imageUrl,
             //imageFile: event.target.files,
@@ -53,7 +51,7 @@ class Image extends React.Component {
 
       render() {
 
-        const { id } = this.props
+        const { loggedUser } = this.state
         
         return (
           <div className="App">
@@ -67,7 +65,7 @@ class Image extends React.Component {
                 <input type="text"/>
                 <input type="submit"/>
             </form> */}
-            <img src={this.state.imageUrl} alt="" className='image' />
+            <img src={this.state.imageUrl} alt="" className='images' />
           </div>
         );
       }

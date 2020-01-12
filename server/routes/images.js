@@ -35,8 +35,7 @@ router.get('/:id', async (req, res) => {
    }
 })
 
-router.post('/post', async (req, res) => {
-//   console.log(req.body);
+router.put('/post', async (req, res) => {
   try {
       let insertQuery = `
       INSERT INTO images(img_src, users_id)

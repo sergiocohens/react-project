@@ -43,7 +43,7 @@ app.use('/users', usersRouter);
 app.use('/tags', tagsRouter);
 app.use('/images', imagesRouter)
 app.use('/imageTags', imageTagsRouter)
-app.post('/upload', upload.single, (req,res,next) => {
+app.post('/upload', upload.single ("image"), (req,res,next) => {
     
     let imageUrl = "http://localhost:3001/" + req.file.path.replace('public/', '')
     res.json({
