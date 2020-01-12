@@ -8,7 +8,6 @@ const getAllUsers = async (req, res, next) => {
     let response = await db.any("SELECT * FROM users;");
     res.json({
       status: "success",
-      message: req.get('host') + req.originalUrl,
       body: response
     })
   } catch (error) {
@@ -31,7 +30,6 @@ const getloggedInUser = async (req, res, next) => {
     let response = await db.one("SELECT email FROM users WHERE loggedIn= true ;", req.body.loggedIn);
     res.json({
       status: "success",
-      message: req.get('host') + req.originalUrl,
       body: response
     })
   } catch (error) {
@@ -50,7 +48,6 @@ const getloggedInUser = async (req, res, next) => {
 //     let response = await db.one("SELECT email FROM users WHERE loggedIn= false ;", req.body.loggedIn);
 //     res.json({
 //       status: "success",
-//       message: req.get('host') + req.originalUrl,
 //       body: response
 //     })
 //   } catch (error) {
@@ -87,7 +84,6 @@ const getUserEmail = async(req,res) =>{
     let response = await db.one('SELECT *  FROM users WHERE email = $1', email)
     res.json({
       status: "success",
-      message: req.get('host') + req.originalUrl,
       body: response
     })
   }catch(error){
@@ -105,7 +101,6 @@ const getProfilePic = async(req,res) => {
     let response = await db.any(`SELECT img_url FROM users WHERE id = $1`, id)
     res.json({
       status: "success",
-      message: req.get('host') + req.originalUrl,
       body: response
     })
   } catch (error) {
