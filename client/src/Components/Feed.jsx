@@ -40,6 +40,7 @@ class Feed extends Component {
         })
         return (
             <div className="feed">
+                    <BurgerMenu />
                 <div className="header">
                     <h1> BUNKR </h1>
                 </div>
@@ -51,7 +52,6 @@ class Feed extends Component {
                         {images}
                     </div>
                     <div className="nav">
-                    <BurgerMenu />
                 </div>
                 </div>
             </div>
