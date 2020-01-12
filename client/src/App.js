@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios'
 // import Login from './Components/Login'
 import Profile from './Components/Profile'
-// import Image from './Components/Image'
+import Image from './Components/Image'
 import Feed from './Components/Feed'
 import './App.css';
 
@@ -123,7 +123,10 @@ class App extends React.Component {
               <Route path="/feed/:id" render={
                 (routeProps) => {
                   return (
+                    <>
+                    <Image/>
                     <Feed email={email} id={id} />
+                    </>
                   )
                 }
               } />
