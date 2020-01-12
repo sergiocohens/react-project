@@ -17,7 +17,8 @@ const storage = multer.diskStorage({
 
 const upload = multer ({
     storage: storage
-}).array('file')
+})
+// .array('file')
 
 
 
@@ -42,13 +43,11 @@ app.use('/users', usersRouter);
 app.use('/tags', tagsRouter);
 app.use('/images', imagesRouter)
 app.use('/imageTags', imageTagsRouter)
-app.post('/upload', upload, (req,res) => {
-    console.log('req.file',req.file)
-    console.log('req.body',req.body)
+app.post('/upload', upload.single, (req,res,next) => {
     
-    let imageFile = "http://localhost:3001/" + req.file.path.replace('public/', '')
+    let imageUrl = "http://localhost:3001/" + req.file.path.replace('public/', '')
     res.json({
-        imageUrl: imageFile,
+        imageUrl: imageUrl,
         message: "file uploaded"
 })
 })
