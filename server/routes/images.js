@@ -35,11 +35,10 @@ router.get('/:id', async (req, res) => {
    }
 })
 
-router.post('/register', async (req, res) => {
-//   console.log(req.body);
+router.put('/post', async (req, res) => {
   try {
       let insertQuery = `
-      INSERT INTO posts(img_src, users_id)
+      INSERT INTO images(img_src, users_id)
       VALUES($1, $2)  
       ` 
       
