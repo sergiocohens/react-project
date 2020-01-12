@@ -31,8 +31,8 @@ CREATE TABLE image_tags (
 
 
 INSERT INTO users (email, img_url, loggedIn)
-   VALUES('dan@gmail.com','http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png', True),
-         ('serg@gmail.com','http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png', False);
+   VALUES('dan@gmail.com','http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png', true),
+         ('serg@gmail.com','http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png', false);
 
 INSERT INTO images (img_src, users_id) 
    VALUES ('https://thumbs.dreamstime.com/b/picturesque-autumn-scenery-santa-maddalena-village-church-road-colorful-trees-meadows-foreground-mountain-peaks-159426189.jpg', 2),
