@@ -40,19 +40,19 @@ class Feed extends Component {
         })
         return (
             <div className="feed">
-                    <BurgerMenu />
+                <BurgerMenu />
                 <div className="header">
                     <h1> BUNKR </h1>
                 </div>
                 <div className="container">
                     <form onSubmit={this.getImagesByTags}>
-                        <input type="text" placeholder="Search hashtags" onChange={this.handleInputChange}></input>
+                        <input type="text" placeholder="Search hashtags" onChange={this.handleInputChange}/>
                     </form>
                     <div className="images">
                         {images}
                     </div>
                     <div className="nav">
-                </div>
+                    </div>
                 </div>
             </div>
         )

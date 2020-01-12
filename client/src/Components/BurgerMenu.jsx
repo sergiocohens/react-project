@@ -1,6 +1,7 @@
 import { slide as Menu } from 'react-burger-menu';
 import React, { Component } from 'react';
 
+
 class BurgerMenu extends Component {
     showSettings(event) {
         event.preventDefault();
