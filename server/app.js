@@ -26,8 +26,7 @@ const usersRouter = require('./routes/users');
 const tagsRouter = require('./routes/tags')
 const imagesRouter = require('./routes/images')
 const imageTagsRouter = require('./routes/imageTags')
-
-
+const loggedInRouter = require('./routes/loggedIn')
 
 var app = express();
 app.use(cors());
@@ -42,6 +41,8 @@ app.use('/users', usersRouter);
 app.use('/tags', tagsRouter);
 app.use('/images', imagesRouter)
 app.use('/imageTags', imageTagsRouter)
+app.use('/loggedIn', loggedInRouter)
+
 app.post('/upload', upload, (req,res) => {
     console.log('req.file',req.file)
     console.log('req.body',req.body)

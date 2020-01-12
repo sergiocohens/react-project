@@ -7,7 +7,8 @@ CREATE DATABASE bunkrbase;
 CREATE TABLE users (
    id SERIAL PRIMARY KEY,
    email VARCHAR UNIQUE,
-   img_url VARCHAR
+   img_url VARCHAR,
+   loggedIn BOOLEAN
 );
 
 CREATE TABLE images (
@@ -27,9 +28,11 @@ CREATE TABLE image_tags (
    img_id INT REFERENCES images(id)
 );
 
-INSERT INTO users (email, img_url)
-   VALUES('dan@gmail.com','http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png'),
-         ('serg@gmail.com','http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png');
+
+
+INSERT INTO users (email, img_url, loggedIn)
+   VALUES('dan@gmail.com','http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png', True),
+         ('serg@gmail.com','http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png', False);
 
 INSERT INTO images (img_src, users_id) 
    VALUES ('https://thumbs.dreamstime.com/b/picturesque-autumn-scenery-santa-maddalena-village-church-road-colorful-trees-meadows-foreground-mountain-peaks-159426189.jpg', 2),
@@ -49,8 +52,9 @@ INSERT INTO image_tags (tag_id, img_id)
             (3,2),
             (3,3);
 
+
+
 SELECT * FROM users;
 SELECT * FROM images;
 SELECT * FROM tags;
 SELECT * FROM image_tags;
-
