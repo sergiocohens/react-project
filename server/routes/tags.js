@@ -17,13 +17,50 @@ router.get('/:hashtag', async (req, res) => {
         })
     }
     catch(err) {
-        res.err({
+        res.send({
             success: false,
             error: "Hashtag does not exist"
         })
     }
+
 })
+router.get ('/tag/:tag' , async (req,res) => {
+    let tagName = req.params.tag
+    try {
+        let tagId = await db.one(
+            `SELECT id FROM tags WHERE tag_name = $1 ` , tagName
+        )
+        res.json({
+            success: true,
+            tagId: tagId
+        })
+    }
+    catch(err) {
+        res.send({
+            success: false,
+            error: "Hashtag does not exist"
+        })
+    }
+    
+})
+router.post('/tag/:tag', async (req,  res) => {
+    let tagName = req.params.tag;
+    try {
+        let insertQuery = `INSERT INTO tags
+        VALUES ($1)`
+        db.none(insertQuery, tagName)
+        res.json({
+            success: true,
+            message: "tags updated"
 
-
+        })
+    }
+    catch(err) {
+        res.send({
+            success: false,
+            error: "Cannot add tag"
+        })
+    }
+})
 
 module.exports = router;
