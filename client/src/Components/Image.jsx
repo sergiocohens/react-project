@@ -18,21 +18,17 @@ class Image extends React.Component {
   }
 
   addTag = async () => {
-    let { tagStr, tagIds } = this.state;
-    let tagId = await axios.get(`http://localhost:3001/tags/tag/${tagStr}`);
-    if (!tagId.data.tagId.id) {
-      let postTag = await axios.post(`http://localhost:3001/tags/tag/${tagStr}`);
-      console.log('Before', tagIds)
-      tagIds.push(postTag)
-      console.log('After', tagIds)
-      this.setState({
-        tagIds
-      })
+    const { tagStr, tagIds, idExist } = this.state;
+    let tagId = await axios.get(`http://localhost:3001/tags/tag/${tagStr}`).then((res) => { return res.data.success });
+    if (!tagId) {
+      await axios.post(`http://localhost:3001/tags/tag/${tagStr}`);
+      let postedTagId = await axios.get(`http://localhost:3001/tags/tag/${tagStr}`).then((res) => { return res.data.tagId.id });
+      tagIds.push(postedTagId); //pushing new tag ID into state array
       // function to post tag in tags table and then store tag id (tagIds) and tagname (tagList) in state
-    } else {
-      // function to store tag id (tagIds) and tagname (tagList) in state
     }
-
+    else {
+      console.log("tag exists");
+    }
   }
 
   handleFileInput = (event) => {

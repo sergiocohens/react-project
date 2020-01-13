@@ -28,7 +28,7 @@ router.get ('/tag/:tag' , async (req,res) => {
     let tagName = req.params.tag
     try {
         let tagId = await db.one(
-            `SELECT id FROM tags WHERE tag_name = $1 ` , tagName
+            `SELECT id FROM tags WHERE tag_name = $1 `, tagName
         )
         res.json({
             success: true,
@@ -46,13 +46,12 @@ router.get ('/tag/:tag' , async (req,res) => {
 router.post('/tag/:tag', async (req,  res) => {
     let tagName = req.params.tag;
     try {
-        let insertQuery = `INSERT INTO tags
+        let insertQuery = `INSERT INTO tags(tag_name)
         VALUES ($1)`
         db.none(insertQuery, tagName)
         res.json({
             success: true,
             message: "tags updated"
-
         })
     }
     catch(err) {
