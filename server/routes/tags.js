@@ -46,7 +46,7 @@ router.get ('/tag/:tag' , async (req,res) => {
 router.post('/tag/:tag', async (req,  res) => {
     let tagName = req.params.tag;
     try {
-        let insertQuery = `INSERT into tags
+        let insertQuery = `INSERT INTO tags
         VALUES ($1)`
         db.none(insertQuery, tagName)
         res.json({
