@@ -18,12 +18,6 @@ const getAllUsers = async (req, res, next) => {
   }
 }
 
-
-
-
-
-
-
 const getloggedInUser = async (req, res, next) => {
   try {
 
@@ -35,28 +29,42 @@ const getloggedInUser = async (req, res, next) => {
   } catch (error) {
     res.status(500).json({
       status: "fail",
-      message: "Error: something went wrong"
+      message: "error:", error
     })
   }
 }
 
+const logInUser = async (req, res, next) => {
+  let email = req.params.email
+  try {
+    let response = await db.any("UPDATE users SET loggedIn = true WHERE email = $1", email)
+    res.json({
+      status: "success",
+      message: `${email} logged in`
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      status: "fail",
+      message: "error:", error
+    })
+  }
+}
 
-
-// const logOutUser = async (req, res, next) => {
-//   try {
-
-//     let response = await db.one("SELECT email FROM users WHERE loggedIn= false ;", req.body.loggedIn);
-//     res.json({
-//       status: "success",
-//       body: response
-//     })
-//   } catch (error) {
-//     res.status(500).json({
-//       status: "fail",
-//       message: "Error: something went wrong"
-//     })
-//   }
-// }
+const logOutUser = async (req, res, next) => {
+  try {
+    let response = await db.any("UPDATE users SET loggedIn = false WHERE loggedIn = true")
+    res.json({
+      status: "success",
+      body: response
+    })
+  } catch (error) {
+    res.status(500).json({
+      status: "fail",
+      message: "Error: something went wrong"
+    })
+  }
+}
 
 
 
@@ -126,11 +134,11 @@ const changeProfilePic = async(req,res) => {
   }
 }
 
-router.get("/getAllUsers/", getAllUsers); 
+router.get("/getAllUsers/", getAllUsers);
 router.post("/sign-up/", addNewUser)
 router.get("/logged-in/", getloggedInUser)
-
-// router.post("/log-out/", logOutUser)
+router.put("/log-in/:email", logInUser)
+router.put("/log-out", logOutUser)
 router.get("/email/:email", getUserEmail)
 router.get("/profilepic/:id", getProfilePic)
 router.put("/profilepic/:id", changeProfilePic)
