@@ -74,7 +74,7 @@ const addNewUser = async(req,res) =>{
   INSERT INTO users(email, img_url, loggedIn)
   VALUES($1, $2, $3);
   `
-    await db.none(insertQuery, [req.body.email, req.body.img_url]);
+    await db.none(insertQuery, [req.body.email, req.body.img_url, true]);
     res.json({
       body: req.body,
       message: `User registration was successful!`

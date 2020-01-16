@@ -16,6 +16,7 @@ class App extends React.Component {
       defaultPhoto: "http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png",
     }
   }
+  
   // componentDidMount = async() => {
   //   const checkIfUserIsLoggedIn = await axios.get(`http://localhost:3001/users/logged-in`)
   //   let loggedInEmail= checkIfUserIsLoggedIn.data.body
@@ -39,9 +40,9 @@ class App extends React.Component {
   }
   handleLogin = async () => {
     const { email, exist, id, button } = this.state
-    let url = `http://localhost:3001/users/email/${email}`
+    let checkByEmailUrl = `http://localhost:3001/users/email/${email}`
     try {
-      const response = await axios.get(url)
+      const response = await axios.get(checkByEmailUrl)
       let responseData = response.data.body
       if (responseData) {
         await axios.put(`http://localhost:3001/users/log-in/${email}`)
@@ -61,10 +62,11 @@ class App extends React.Component {
   }
   handleRegister = async () => {
     const { email, exist, id, button, defaultPhoto } = this.state
-    let checkIfEmailExist = `http://localhost:3001/users/email/${email}`
+    let checkByEmailUrl = `http://localhost:3001/users/email/${email}`
     try {
-      const response = await axios.get(checkIfEmailExist)
-      if (response.data) {
+      const response = await axios.get(checkByEmailUrl)
+      let responseData = response.data.body
+      if (responseData) {
         this.setState({
           exist: true,
         })
@@ -73,13 +75,13 @@ class App extends React.Component {
       console.log("Error", error)
     }
     if (exist === false) {
-      let addNewUserEmail = "http://localhost:3001/users/sign-up/"
+      let addNewUserUrl = "http://localhost:3001/users/sign-up/"
       try {
-        const postNewEmailData = await axios.post(addNewUserEmail, { email: email, img_url: defaultPhoto })
-        const updatedNewUserEmailInfo= await axios.get(checkIfEmailExist)
-        const getUpdatedNewUsersEmailData = updatedNewUserEmailInfo.data.body
+        const postNewEmailData = await axios.post(addNewUserUrl, { email: email, img_url: defaultPhoto })
+        const newUserInfo= await axios.get(checkByEmailUrl)
+        const newUsersId = newUserInfo.data.body.id
         this.setState({
-          id: getUpdatedNewUsersEmailData.id,
+          id: newUsersId,
           redirected: true,
           button: "register"
         })
