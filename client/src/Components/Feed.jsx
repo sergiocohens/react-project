@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import BurgerMenu from './BurgerMenu.jsx';
+import BurgerMenu from './Menu/BurgerMenu.jsx';
+import FeedCards from './Feed/FeedCards.jsx'
 import '../App.css';
 
 class Feed extends Component {
@@ -52,9 +53,6 @@ class Feed extends Component {
     }
     render() {
         const { urls, hashtag } = this.state;
-        let images = urls.map((elem) => {
-            return <img src={elem} alt=""></img>
-        })
         return (
             <div className="feed">
                 <BurgerMenu />
@@ -66,7 +64,7 @@ class Feed extends Component {
                         <input type="text" placeholder="Search hashtags" onChange={this.handleInputChange}/>
                     </form>
                     <div className="images">
-                        {images}
+                        <FeedCards urls={urls} />
                     </div>
                     <div className="nav">
                     </div>
