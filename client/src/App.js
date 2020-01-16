@@ -34,17 +34,17 @@ class App extends React.Component {
     this.setState({
       email: event.target.value
     })
-const allImages = await axios.get("http://localhost:3001/images/all")
-console.log("all Inages" , allImages)
+// const allImages = await axios.get("http://localhost:3001/images/all")
+// console.log("all Images" , allImages)
   }
   handleLogin = async () => {
     const { email, exist, id, button } = this.state
-    let checkIfEmailExist = `http://localhost:3001/users/email/${email}`
-    console.log(checkIfEmailExist)
+    let url = `http://localhost:3001/users/email/${email}`
     try {
-      const response = await axios.get(checkIfEmailExist)
+      const response = await axios.get(url)
       let responseData = response.data.body
       if (responseData) {
+        await axios.put(`http://localhost:3001/users/log-in/${email}`)
         return this.setState({
           exist: true,
           id: responseData.id,
