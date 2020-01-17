@@ -16,7 +16,6 @@ class Image extends React.Component {
       imgId: null,
       tagsId: [],
       tagsName: [],
-
     }
   }
 
@@ -92,7 +91,7 @@ class Image extends React.Component {
 
       })
 
-    
+
     } catch (err) {
       console.log(err)
     }
@@ -113,7 +112,7 @@ class Image extends React.Component {
         }
       }
     }
-this.handleResetTags()
+    this.handleResetTags()
   }
 
 
@@ -123,10 +122,6 @@ this.handleResetTags()
       tagsName: [],
     })
   }
-  
-
-
-
 
 
   render() {
@@ -139,11 +134,9 @@ this.handleResetTags()
             onChange={this.handleFileInput} placeholder="Write tags with hashtags" />
           <br></br>
           <input type="submit" value="Upload" />
-
-
         </form>
+        <img src={this.state.imageUrl} alt="" className='images' />
         <ul className="input-tag__tags">
-
           {tagsName.map((tagsName, i) => (
             <li key={tagsName}>
               {tagsName}
