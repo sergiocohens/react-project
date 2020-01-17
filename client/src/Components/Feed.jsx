@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import BurgerMenu from './Menu/BurgerMenu.jsx';
 import FeedCards from './Feed/FeedCards.jsx'
-import '../App.css';
+import Image from './Image.jsx'
+import Modal from 'react-modal';
+// import '../App.css';
 
 class Feed extends Component {
     constructor() {
@@ -10,8 +12,11 @@ class Feed extends Component {
         this.state = {
             hashtag: "",
             urls: [],
+            showModal: false
         }
         this.ref = React.createRef();
+        this.handleOpenModal = this.handleOpenModal.bind(this);
+        this.handleCloseModal = this.handleCloseModal.bind(this);
     }
     componentDidMount() {
         this.getAllImages();
@@ -39,7 +44,7 @@ class Feed extends Component {
     getAllImages = async () => {
         let url = `http://localhost:3001/images/all`;
         try {
-            let allImages = await axios.get(url).then((res) => {return res.data.payload})
+            let allImages = await axios.get(url).then((res) => { return res.data.payload })
             let allImagesUrls = allImages.map((elem) => {
                 return elem.img_src;
             })
@@ -47,10 +52,24 @@ class Feed extends Component {
                 urls: allImagesUrls
             })
         }
-        catch(err) {
+        catch (err) {
             console.log("error:", err)
         }
     }
+
+    handleOpenModal() {
+        this.setState({ showModal: true });
+
+    }
+
+    handleCloseModal() {
+        this.setState({ showModal: false });
+    }
+
+    // componentDidMount() {
+    //     Modal.setAppElement('body');
+    //  }
+
     render() {
         const { urls, hashtag } = this.state;
         return (
@@ -61,8 +80,18 @@ class Feed extends Component {
                 </div>
                 <div className="container">
                     <form onSubmit={this.getImagesByTags}>
-                        <input type="text" placeholder="Search hashtags" onChange={this.handleInputChange}/>
+                        <input type="text" placeholder="Search hashtags" onChange={this.handleInputChange} />
                     </form>
+                    <div>
+                        <button onClick={this.handleOpenModal}  >Add a photo </button>
+                        <Modal
+                            isOpen={this.state.showModal}
+                            contentLabel="Photo uploaded"
+                        >
+                            <button className="closeButton" onClick={this.handleCloseModal}>Close</button>
+                            <div>{<Image />}</div>
+                        </Modal>
+                    </div>
                     <div className="images">
                         <FeedCards urls={urls} />
                     </div>

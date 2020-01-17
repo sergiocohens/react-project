@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom'
+import './Image.css';
 
 
 class Image extends React.Component {
@@ -24,13 +25,13 @@ class Image extends React.Component {
     this.setState({
       imageFile: event.target.files[0],
     })
-
     const allImages = await axios.get('http://localhost:3001/images/all')
     const allImagesData = allImages.data.payload
     this.setState({
       imgId: allImagesData[allImagesData.length - 1].id + 1
     })
   }
+  
 
 
   inputKeyDown = async (event) => {
@@ -119,31 +120,43 @@ class Image extends React.Component {
   handleResetTags = () => {
     this.setState({
       tagsId: [],
-      tagsName: [],
+      tagsName:[]
     })
   }
 
 
   render() {
-    const { loggedUser, tagList, tagIds, tagStr, tagsName } = this.state
+    const { loggedUser, tagList, tagIds, tagStr, tagsName, imageFile } = this.state
     return (
-      <div className="App">
-        <form onSubmit={this.handleSubmit}>
-          <p>Upload image</p>
+      <div className="image">
+{/* <div className ="image_stage"> */}
+<p>Upload image</p>
+<form onSubmit={this.handleSubmit}>
+        
           <input type="file"
             onChange={this.handleFileInput} placeholder="Write tags with hashtags" />
-          <br></br>
-          <input type="submit" value="Upload" />
+          <input className="image_submit" type="submit" value="Upload" />
+          {/* <button className= "image"type="submit" value="Upload">  Upload </button> */}
+          <img src={this.state.imageUrl} alt="" className='images' />
+          {/* <img src={this.state.imageFile} alt="" className='images' /> */}
+
         </form>
-        <img src={this.state.imageUrl} alt="" className='images' />
+
+
+
         <ul className="input-tag__tags">
           {tagsName.map((tagsName, i) => (
-            <li key={tagsName}>
+            <li className = "listOfTags" key={tagsName}>
               {tagsName}
             </li>
+          
           ))}
           <li className="input-tag__tags__input"><input type="text" placeholder="InsertTags" onKeyDown={this.inputKeyDown} ref={c => { this.tagInput = c; }} /></li>
         </ul>
+
+{/* </div> */}
+
+
       </div>
     );
   }
