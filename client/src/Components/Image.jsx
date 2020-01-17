@@ -33,7 +33,7 @@ class Image extends React.Component {
   }
 
 
-  inputKeyDown = async (event) => {
+  handleAddTag = async (event) => {
     this.setState({
       tagStr: event.target.value
     })
@@ -142,7 +142,7 @@ class Image extends React.Component {
               {tagsName}
             </li>
           ))}
-          <li className="input-tag__tags__input"><input type="text" placeholder="InsertTags" onKeyDown={this.inputKeyDown} ref={c => { this.tagInput = c; }} /></li>
+          <li className="input-tag__tags__input"><input type="text" placeholder="InsertTags" onKeyDown={this.handleAddTag} ref={c => { this.tagInput = c; }} /></li>
         </ul>
       </div>
     );
