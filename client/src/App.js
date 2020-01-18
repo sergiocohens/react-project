@@ -127,10 +127,7 @@ class App extends React.Component {
         return (
           <div className="App">
             <div className="AppStage">
-
-
-
-              <h1>BUNKR</h1>
+              <h1>BunkR</h1>
               <div className="login-form">
                 <form className="app_form" onSubmit={this.handleSubmit}>
                   <p>Email: </p>
@@ -149,13 +146,8 @@ class App extends React.Component {
       if (exist === true) {
         return (
           <div className="App">
-
-
             <div className="AppStage">
-
-
-
-              <h1>BUNKR</h1>
+              <h1>BunkR</h1>
               <div className="login-form">
                 <form className="app_form" onSubmit={this.handleSubmit}>
                   <p>Email: </p>
@@ -165,7 +157,6 @@ class App extends React.Component {
                 </form>
                 <p>Email is Already Registered. </p>
               </div>
-
             </div>
           </div>
         );
@@ -200,7 +191,7 @@ class App extends React.Component {
       return (
         <div className="App">
           <div className="AppStage">
-            <h1>BUNKR</h1>
+            <h1>BunkR</h1>
             <div className="login-form">
               <form className="app_form" onSubmit={this.handleSubmit}>
                 <p>Email: </p>

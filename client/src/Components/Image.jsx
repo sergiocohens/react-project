@@ -12,11 +12,11 @@ class Image extends React.Component {
       imageFile: null,
       loggedUser: 1,
       tagStr: "",
-      tagList: "",
       tagId: null,
       imgId: null,
       tagsId: [],
       tagsName: [],
+      imgPreview: ""
     }
   }
 
@@ -30,8 +30,16 @@ class Image extends React.Component {
     this.setState({
       imgId: allImagesData[allImagesData.length - 1].id + 1
     })
+    let reader = new FileReader();
+    reader.onloadend = () => {
+      this.setState({
+        imagePreviewUrl: reader.result
+      });
+    }
+
+    reader.readAsDataURL(this.state.imageFile)
   }
-  
+
 
 
   inputKeyDown = async (event) => {
@@ -67,8 +75,6 @@ class Image extends React.Component {
   }
 
 
-
-
   handleSubmit = async (event) => {
     event.preventDefault();
     const { tagsId, imgId } = this.state
@@ -82,17 +88,11 @@ class Image extends React.Component {
 
       const post = axios.put(`http://localhost:3001/images/post`, { img_src: res.data.imageUrl, users_id: this.state.loggedUser })
       // post tags to the imagestags table with tag_id (from this.state.tagIds) and img_id (from response from updated images table)
-
-
       this.setState({
         imageUrl: res.data.imageUrl,
         //imageFile: event.target.files,
         loaded: 0,
-
-
       })
-
-
     } catch (err) {
       console.log(err)
     }
@@ -120,43 +120,43 @@ class Image extends React.Component {
   handleResetTags = () => {
     this.setState({
       tagsId: [],
-      tagsName:[]
+      tagsName: [],
+      imageUrl: "",
+      imagePreviewUrl: null,
     })
   }
 
 
   render() {
-    const { loggedUser, tagList, tagIds, tagStr, tagsName, imageFile } = this.state
+    let { imagePreviewUrl, tagsName } = this.state;
+    let imagePreview = null;
+    if (imagePreviewUrl) {
+      imagePreview = (<img className = "imagePrev" src={imagePreviewUrl} />);
+    } else {
+      imagePreview = (<div className="previewText">No Image Preview</div>);
+    }
     return (
       <div className="image">
-{/* <div className ="image_stage"> */}
-<p>Upload image</p>
-<form onSubmit={this.handleSubmit}>
-        
+        {/* <div className ="image_stage"> */}
+        <p>Upload image</p>
+        <form onSubmit={this.handleSubmit}>
+
           <input type="file"
             onChange={this.handleFileInput} placeholder="Write tags with hashtags" />
           <input className="image_submit" type="submit" value="Upload" />
-          {/* <button className= "image"type="submit" value="Upload">  Upload </button> */}
-          <img src={this.state.imageUrl} alt="" className='images' />
-          {/* <img src={this.state.imageFile} alt="" className='images' /> */}
+       
 
         </form>
-
-
-
         <ul className="input-tag__tags">
           {tagsName.map((tagsName, i) => (
-            <li className = "listOfTags" key={tagsName}>
+            <li className="listOfTags" key={tagsName}>
               {tagsName}
             </li>
-          
+
           ))}
           <li className="input-tag__tags__input"><input type="text" placeholder="InsertTags" onKeyDown={this.inputKeyDown} ref={c => { this.tagInput = c; }} /></li>
         </ul>
-
-{/* </div> */}
-
-
+        {imagePreview}
       </div>
     );
   }
