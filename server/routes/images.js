@@ -57,8 +57,7 @@ router.put('/post', async (req, res) => {
   try {
       let insertQuery = `
       INSERT INTO images(img_src, users_id)
-      VALUES($1, $2)  
-      ` 
+      VALUES($1, $2);` 
       
       await db.none(insertQuery, [req.body.img_src, req.body.users_id]);
       res.json({

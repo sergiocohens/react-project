@@ -36,7 +36,6 @@ class Image extends React.Component {
         imagePreviewUrl: reader.result
       });
     }
-
     reader.readAsDataURL(this.state.imageFile)
   }
 
