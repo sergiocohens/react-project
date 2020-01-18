@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom'
+import './Image.css';
 
 
 class Image extends React.Component {
@@ -11,11 +12,11 @@ class Image extends React.Component {
       imageFile: null,
       loggedUser: 1,
       tagStr: "",
-      tagList: "",
       tagId: null,
       imgId: null,
       tagsId: [],
       tagsName: [],
+      imgPreview: ""
     }
   }
 
@@ -24,16 +25,24 @@ class Image extends React.Component {
     this.setState({
       imageFile: event.target.files[0],
     })
-
     const allImages = await axios.get('http://localhost:3001/images/all')
     const allImagesData = allImages.data.payload
     this.setState({
       imgId: allImagesData[allImagesData.length - 1].id + 1
     })
+    let reader = new FileReader();
+    reader.onloadend = () => {
+      this.setState({
+        imagePreviewUrl: reader.result
+      });
+    }
+
+    reader.readAsDataURL(this.state.imageFile)
   }
 
 
   handleAddTag = async (event) => {
+
     this.setState({
       tagStr: event.target.value
     })
@@ -66,8 +75,6 @@ class Image extends React.Component {
   }
 
 
-
-
   handleSubmit = async (event) => {
     event.preventDefault();
     const { tagsId, imgId } = this.state
@@ -81,17 +88,11 @@ class Image extends React.Component {
 
       const post = axios.put(`http://localhost:3001/images/post`, { img_src: res.data.imageUrl, users_id: this.state.loggedUser })
       // post tags to the imagestags table with tag_id (from this.state.tagIds) and img_id (from response from updated images table)
-
-
       this.setState({
         imageUrl: res.data.imageUrl,
         //imageFile: event.target.files,
         loaded: 0,
-
-
       })
-
-
     } catch (err) {
       console.log(err)
     }
@@ -120,30 +121,42 @@ class Image extends React.Component {
     this.setState({
       tagsId: [],
       tagsName: [],
+      imageUrl: "",
+      imagePreviewUrl: null,
     })
   }
 
 
   render() {
-    const { loggedUser, tagList, tagIds, tagStr, tagsName } = this.state
+    let { imagePreviewUrl, tagsName } = this.state;
+    let imagePreview = null;
+    if (imagePreviewUrl) {
+      imagePreview = (<img className = "imagePrev" src={imagePreviewUrl} />);
+    } else {
+      imagePreview = (<div className="previewText">No Image Preview</div>);
+    }
     return (
-      <div className="App">
+      <div className="image">
+        {/* <div className ="image_stage"> */}
+        <p>Upload image</p>
         <form onSubmit={this.handleSubmit}>
-          <p>Upload image</p>
+
           <input type="file"
             onChange={this.handleFileInput} placeholder="Write tags with hashtags" />
-          <br></br>
-          <input type="submit" value="Upload" />
+          <input className="image_submit" type="submit" value="Upload" />
+       
+
         </form>
-        <img src={this.state.imageUrl} alt="" className='images' />
         <ul className="input-tag__tags">
           {tagsName.map((tagsName, i) => (
-            <li key={tagsName}>
+            <li className="listOfTags" key={tagsName}>
               {tagsName}
             </li>
+
           ))}
           <li className="input-tag__tags__input"><input type="text" placeholder="InsertTags" onKeyDown={this.handleAddTag} ref={c => { this.tagInput = c; }} /></li>
         </ul>
+        {imagePreview}
       </div>
     );
   }

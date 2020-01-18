@@ -1,14 +1,9 @@
 import React from 'react';
 import axios from 'axios'
-// import Login from './Components/Login'
 import Profile from './Components/Profile'
-import Image from './Components/Image'
 import Feed from './Components/Feed'
 import './App.css';
-
 import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom'
-
-
 class App extends React.Component {
   constructor() {
     super()
@@ -20,31 +15,37 @@ class App extends React.Component {
       redirected: false,
       defaultPhoto: "http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png",
     }
-
   }
 
-
+  // componentDidMount = async() => {
+  //   const checkIfUserIsLoggedIn = await axios.get(`http://localhost:3001/users/logged-in`)
+  //   let loggedInEmail= checkIfUserIsLoggedIn.data.body
+  //   // console.log(loggedInEmail)
+  //   // console.log(loggedInEmail[0])
+  //   let userInfo = `http://localhost:3001/users/email/${loggedInEmail}`
+  //   console.log(userInfo)
+  //   this.setState({
+  //     email: userInfo
+  //   })
+  // }
   handleSubmit = (event) => {
     event.preventDefault()
   }
-
-  handleEmailInput = (event) => {
+  handleEmailInput = async (event) => {
     this.setState({
       email: event.target.value
     })
+    // const allImages = await axios.get("http://localhost:3001/images/all")
+    // console.log("all Images" , allImages)
   }
-
   handleLogin = async () => {
     const { email, exist, id, button } = this.state
-    let checkIfEmailExist = `http://localhost:3001/users/${email}`
-
-
+    let checkByEmailUrl = `http://localhost:3001/users/email/${email}`
     try {
-
-      const response = await axios.get(checkIfEmailExist)
+      const response = await axios.get(checkByEmailUrl)
       let responseData = response.data.body
-
       if (responseData) {
+        await axios.put(`http://localhost:3001/users/log-in/${email}`)
         return this.setState({
           exist: true,
           id: responseData.id,
@@ -57,19 +58,15 @@ class App extends React.Component {
       this.setState({
         button: "login",
       })
-
     }
   }
-
-
-
-
   handleRegister = async () => {
     const { email, exist, id, button, defaultPhoto } = this.state
-    let checkIfEmailExist = `http://localhost:3001/users/${email}`
+    let checkByEmailUrl = `http://localhost:3001/users/email/${email}`
     try {
-      const response = await axios.get(checkIfEmailExist)
-      if (response.data) {
+      const response = await axios.get(checkByEmailUrl)
+      let responseData = response.data.body
+      if (responseData) {
         this.setState({
           exist: true,
         })
@@ -77,17 +74,14 @@ class App extends React.Component {
     } catch (error) {
       console.log("Error", error)
     }
-
-
-
     if (exist === false) {
-      let addNewUser = "http://localhost:3001/users/"
+      let addNewUserUrl = "http://localhost:3001/users/sign-up/"
       try {
-        const postNewEmailData = await axios.post(addNewUser, { email: email, img_url: defaultPhoto })
-        const updatedNewUserEmailInfo= await axios.get(checkIfEmailExist)
-        const getUpdatedNewUsersEmailData = updatedNewUserEmailInfo.data.body
+        const postNewEmailData = await axios.post(addNewUserUrl, { email: email, img_url: defaultPhoto })
+        const newUserInfo = await axios.get(checkByEmailUrl)
+        const newUsersId = newUserInfo.data.body.id
         this.setState({
-          id: getUpdatedNewUsersEmailData.id,
+          id: newUsersId,
           redirected: true,
           button: "register"
         })
@@ -100,10 +94,6 @@ class App extends React.Component {
       }
     }
   }
-
-
-
-
   render() {
     const { email, exist, id, button, redirected } = this.state
     if (button === "login") {
@@ -111,67 +101,63 @@ class App extends React.Component {
         return (
           <div className="App">
             <nav>
-
               <Link to={`"/profile/${id}`}></Link>{" "}
               <Link to={`"/feed/${id}`}></Link>{" "}
-
-
-
-
             </nav>
             <Switch>
               <Route path="/feed/:id" render={
                 (routeProps) => {
                   return (
-                    <>
-                    <Image/>
                     <Feed email={email} id={id} />
-                    </>
                   )
                 }
               } />
-
               <Route path="/profile/:id" render={
                 (routeProps) => {
                   return (
                     <Profile email={email} id={id} />
-
                   )
                 }
-
               } />
-
-
-
-
             </Switch>
             <Redirect to={`/feed/${id}`} ç />
-
           </div>
         );
       } else {
         return (
           <div className="App">
-            <form onSubmit={this.handleSubmit}>
-              <input className="loginInput" onChange={this.handleEmailInput} type="text" />
-              <button className="loginLogin" onClick={this.handleLogin}>Login</button>
-              <button className="loginRegister" onClick={this.handleRegister}>Register</button>
-            </form>
-            <p>Email Does Not Exist. Try again.</p>
+            <div className="AppStage">
+              <h1>BunkR</h1>
+              <div className="login-form">
+                <form className="app_form" onSubmit={this.handleSubmit}>
+                  <p>Email: </p>
+                  <input className="loginInput" onChange={this.handleEmailInput} type="text" />
+                  <button className="loginLogin" onClick={this.handleLogin}>Login</button>
+                  <button className="loginRegister" onClick={this.handleRegister}>Register</button>
+                </form>
+                <p>Email Does Not Exist. Try again.</p>
+              </div>
+            </div>
           </div>
+
         );
       }
     } else if (button === "register") {
-
       if (exist === true) {
         return (
           <div className="App">
-            <form onSubmit={this.handleSubmit}>
-              <input className="loginInput" onChange={this.handleEmailInput} type="text" />
-              <button className="loginLogin" onClick={this.handleLogin}>Login</button>
-              <button className="loginRegister" onClick={this.handleRegister}>Register</button>
-            </form>
-            <p>Email is Already Registered. </p>
+            <div className="AppStage">
+              <h1>BunkR</h1>
+              <div className="login-form">
+                <form className="app_form" onSubmit={this.handleSubmit}>
+                  <p>Email: </p>
+                  <input className="loginInput" onChange={this.handleEmailInput} type="text" />
+                  <button className="loginLogin" onClick={this.handleLogin}>Login</button>
+                  <button className="loginRegister" onClick={this.handleRegister}>Register</button>
+                </form>
+                <p>Email is Already Registered. </p>
+              </div>
+            </div>
           </div>
         );
       } else {
@@ -181,16 +167,13 @@ class App extends React.Component {
               <Link to={`"/profile/${id}`}></Link>{" "}
               <Link to={`"/feed/${id}`}></Link>{" "}
             </nav>
-
             <Switch>
               <Route path="/profile/:id" render={
                 (routeProps) => {
                   return (
                     <Profile email={email} id={id} />
-
                   )
                 }
-
               } />
               <Route path="/feed/:id" render={
                 (routeProps) => {
@@ -207,21 +190,20 @@ class App extends React.Component {
     } else if (redirected === false) {
       return (
         <div className="App">
-
-          <form className ="app_form"onSubmit={this.handleSubmit}>
-            <input className="loginInput" onChange={this.handleEmailInput} type="text" />
-            <button className="loginLogin" onClick={this.handleLogin}>Login</button>
-            <button className="loginRegister" onClick={this.handleRegister}>Register</button>
-          </form>
+          <div className="AppStage">
+            <h1>BunkR</h1>
+            <div className="login-form">
+              <form className="app_form" onSubmit={this.handleSubmit}>
+                <p>Email: </p>
+                <input className="loginInput" onChange={this.handleEmailInput} type="text" />
+                <button className="loginLogin" onClick={this.handleLogin}>Login</button>
+                <button className="loginRegister" onClick={this.handleRegister}>Register</button>
+              </form>
+            </div>
+          </div>
         </div>
       );
     }
   }
-
-
-
-
-
 }
-
-export default App;
+export default App
