@@ -123,6 +123,7 @@ class Image extends React.Component {
       tagsName: [],
       imageUrl: "",
       imagePreviewUrl: null,
+      tagStr: "",
     })
   }
 
@@ -131,7 +132,7 @@ class Image extends React.Component {
     let { imagePreviewUrl, tagsName } = this.state;
     let imagePreview = null;
     if (imagePreviewUrl) {
-      imagePreview = (<img className = "imagePrev" src={imagePreviewUrl} />);
+      imagePreview = (<img className= "imagePrev" src={imagePreviewUrl} />);
     } else {
       imagePreview = (<div className="previewText">No Image Preview</div>);
     }
