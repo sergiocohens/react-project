@@ -53,8 +53,8 @@ class Image extends React.Component {
         return;
       }
       if (!tagIdExist) {
-        await axios.post(`http://localhost:3001/tags/tag/${tagStr}`);
-        let postedTagId = await axios.get(`http://localhost:3001/tags/tag/${tagStr}`).then((res) => { return res.data.tagId.id });
+       axios.post(`http://localhost:3001/tags/tag/${tagStr}`);
+       let postedTagId = axios.get(`http://localhost:3001/tags/tag/${tagStr}`).then((res) => { return res.data.tagId.id });
         this.setState({
           tagId: postedTagId,
           tagsName: [...this.state.tagsName, tagStr],
@@ -128,6 +128,7 @@ class Image extends React.Component {
   }
 
 
+
   render() {
     let { imagePreviewUrl, tagsName } = this.state;
     let imagePreview = null;
@@ -143,9 +144,9 @@ class Image extends React.Component {
         <form onSubmit={this.handleSubmit}>
 
           <input type="file"
-            onChange={this.handleFileInput} placeholder="Write tags with hashtags" />
+            onChange={this.handleFileInput} placeholder="" />
           <input className="image_submit" type="submit" value="Upload" />
-       
+
 
         </form>
         <ul className="input-tag__tags">
@@ -155,7 +156,7 @@ class Image extends React.Component {
             </li>
 
           ))}
-          <li className="input-tag__tags__input"><input type="text" placeholder="InsertTags" onKeyDown={this.handleAddTag} ref={c => { this.tagInput = c; }} /></li>
+          <li className="input-tag__tags__input"><input type="text" placeholder= "type tag and press Enter" onKeyDown={this.handleAddTag} ref={c => { this.tagInput = c; }} /></li>
         </ul>
         {imagePreview}
       </div>
