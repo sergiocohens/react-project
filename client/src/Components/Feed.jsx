@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import BurgerMenu from './Menu/BurgerMenu.jsx';
 import FeedCards from './Feed/FeedCards.jsx'
+import ImageButton from './Image/ImageButton.jsx'
 import '../App.css';
 
 class Feed extends Component {
@@ -39,7 +40,7 @@ class Feed extends Component {
     getAllImages = async () => {
         let url = `http://localhost:3001/images/all`;
         try {
-            let allImages = await axios.get(url).then((res) => {return res.data.payload})
+            let allImages = await axios.get(url).then((res) => { return res.data.payload })
             let allImagesUrls = allImages.map((elem) => {
                 return elem.img_src;
             })
@@ -47,7 +48,7 @@ class Feed extends Component {
                 urls: allImagesUrls
             })
         }
-        catch(err) {
+        catch (err) {
             console.log("error:", err)
         }
     }
@@ -59,14 +60,15 @@ class Feed extends Component {
                 <div className="header">
                     <h1> BUNKR </h1>
                 </div>
+                <div className="button">
+                    <ImageButton />
+                </div>
                 <div className="container">
                     <form onSubmit={this.getImagesByTags}>
-                        <input type="text" placeholder="Search hashtags" onChange={this.handleInputChange}/>
+                        <input type="text" placeholder="Search hashtags" onChange={this.handleInputChange} />
                     </form>
                     <div className="images">
                         <FeedCards urls={urls} />
-                    </div>
-                    <div className="nav">
                     </div>
                 </div>
             </div>

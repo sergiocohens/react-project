@@ -51,4 +51,7 @@
 .profilePic {
   width: 360px;
   height: 360px;
+};
+.button {
+  align-self: right;
 }
