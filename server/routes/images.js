@@ -35,6 +35,24 @@ router.get('/:id', async (req, res) => {
    }
 })
 
+
+router.get('/:url', async (req, res) => {
+    let url = req.params.img_src
+   try {
+       let images = await db.one(`SELECT id FROM images WHERE id = $1`, url);
+       res.json({
+           payload: images,
+           message: `success, retrieved the image`
+       });
+   } catch (error) {
+       res.status(500);
+       res.json({
+           message: `Error, Something went wrong.`
+       })
+       console.log(error);
+   }
+})
+
 router.put('/post', async (req, res) => {
   try {
       let insertQuery = `

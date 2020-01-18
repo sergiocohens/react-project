@@ -16,7 +16,7 @@ class App extends React.Component {
       defaultPhoto: "http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png",
     }
   }
-  
+
   // componentDidMount = async() => {
   //   const checkIfUserIsLoggedIn = await axios.get(`http://localhost:3001/users/logged-in`)
   //   let loggedInEmail= checkIfUserIsLoggedIn.data.body
@@ -31,12 +31,12 @@ class App extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault()
   }
-  handleEmailInput = async(event) => {
+  handleEmailInput = async (event) => {
     this.setState({
       email: event.target.value
     })
-// const allImages = await axios.get("http://localhost:3001/images/all")
-// console.log("all Images" , allImages)
+    // const allImages = await axios.get("http://localhost:3001/images/all")
+    // console.log("all Images" , allImages)
   }
   handleLogin = async () => {
     const { email, exist, id, button } = this.state
@@ -78,7 +78,7 @@ class App extends React.Component {
       let addNewUserUrl = "http://localhost:3001/users/sign-up/"
       try {
         const postNewEmailData = await axios.post(addNewUserUrl, { email: email, img_url: defaultPhoto })
-        const newUserInfo= await axios.get(checkByEmailUrl)
+        const newUserInfo = await axios.get(checkByEmailUrl)
         const newUsersId = newUserInfo.data.body.id
         this.setState({
           id: newUsersId,
@@ -126,25 +126,38 @@ class App extends React.Component {
       } else {
         return (
           <div className="App">
-            <form onSubmit={this.handleSubmit}>
-              <input className="loginInput" onChange={this.handleEmailInput} type="text" />
-              <button className="loginLogin" onClick={this.handleLogin}>Login</button>
-              <button className="loginRegister" onClick={this.handleRegister}>Register</button>
-            </form>
-            <p>Email Does Not Exist. Try again.</p>
+            <div className="AppStage">
+              <h1>BunkR</h1>
+              <div className="login-form">
+                <form className="app_form" onSubmit={this.handleSubmit}>
+                  <p>Email: </p>
+                  <input className="loginInput" onChange={this.handleEmailInput} type="text" />
+                  <button className="loginLogin" onClick={this.handleLogin}>Login</button>
+                  <button className="loginRegister" onClick={this.handleRegister}>Register</button>
+                </form>
+                <p>Email Does Not Exist. Try again.</p>
+              </div>
+            </div>
           </div>
+
         );
       }
     } else if (button === "register") {
       if (exist === true) {
         return (
           <div className="App">
-            <form onSubmit={this.handleSubmit}>
-              <input className="loginInput" onChange={this.handleEmailInput} type="text" />
-              <button className="loginLogin" onClick={this.handleLogin}>Login</button>
-              <button className="loginRegister" onClick={this.handleRegister}>Register</button>
-            </form>
-            <p>Email is Already Registered. </p>
+            <div className="AppStage">
+              <h1>BunkR</h1>
+              <div className="login-form">
+                <form className="app_form" onSubmit={this.handleSubmit}>
+                  <p>Email: </p>
+                  <input className="loginInput" onChange={this.handleEmailInput} type="text" />
+                  <button className="loginLogin" onClick={this.handleLogin}>Login</button>
+                  <button className="loginRegister" onClick={this.handleRegister}>Register</button>
+                </form>
+                <p>Email is Already Registered. </p>
+              </div>
+            </div>
           </div>
         );
       } else {
@@ -177,11 +190,17 @@ class App extends React.Component {
     } else if (redirected === false) {
       return (
         <div className="App">
-          <form className ="app_form"onSubmit={this.handleSubmit}>
-            <input className="loginInput" onChange={this.handleEmailInput} type="text" />
-            <button className="loginLogin" onClick={this.handleLogin}>Login</button>
-            <button className="loginRegister" onClick={this.handleRegister}>Register</button>
-          </form>
+          <div className="AppStage">
+            <h1>BunkR</h1>
+            <div className="login-form">
+              <form className="app_form" onSubmit={this.handleSubmit}>
+                <p>Email: </p>
+                <input className="loginInput" onChange={this.handleEmailInput} type="text" />
+                <button className="loginLogin" onClick={this.handleLogin}>Login</button>
+                <button className="loginRegister" onClick={this.handleRegister}>Register</button>
+              </form>
+            </div>
+          </div>
         </div>
       );
     }
