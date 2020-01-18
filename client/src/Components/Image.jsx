@@ -2,8 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom'
 import './Image.css';
-
-
 class Image extends React.Component {
   constructor(props) {
     super(props)
@@ -19,8 +17,6 @@ class Image extends React.Component {
       imgPreview: ""
     }
   }
-
-
   handleFileInput = async (event) => {
     this.setState({
       imageFile: event.target.files[0],
@@ -38,10 +34,7 @@ class Image extends React.Component {
     }
     reader.readAsDataURL(this.state.imageFile)
   }
-
-
-  handleAddTag = async (event) => {
-
+  inputKeyDown = async (event) => {
     this.setState({
       tagStr: event.target.value
     })
@@ -52,8 +45,8 @@ class Image extends React.Component {
         return;
       }
       if (!tagIdExist) {
-       axios.post(`http://localhost:3001/tags/tag/${tagStr}`);
-       let postedTagId = axios.get(`http://localhost:3001/tags/tag/${tagStr}`).then((res) => { return res.data.tagId.id });
+        this.postTag(tagStr)
+        let postedTagId = (await this.maxTagId() + 1)
         this.setState({
           tagId: postedTagId,
           tagsName: [...this.state.tagsName, tagStr],
@@ -62,7 +55,6 @@ class Image extends React.Component {
       } else {
         let tagId = await axios.get(`http://localhost:3001/tags/tag/${tagStr}`)
         let tagIdData = tagId.data.tagId.id
-
         this.setState({
           tagId: tagIdData,
           tagsName: [...this.state.tagsName, tagStr],
@@ -73,6 +65,14 @@ class Image extends React.Component {
     }
   }
 
+  maxTagId = async () => {
+    let response = await axios.get('http://localhost:3001/tags/max/')
+    return response.data.maxId[0].max
+  }
+  postTag = async (tag) => {
+    await axios.post(`http://localhost:3001/tags/tag/${tag}`)
+    return
+  }
 
   handleSubmit = async (event) => {
     event.preventDefault();
@@ -80,11 +80,8 @@ class Image extends React.Component {
     const data = new FormData()
     //for(var x = 0; x<this.state.imageFile.length; x++){
     data.append('image', this.state.imageFile)
-
-
     try {
       const res = await axios.post('http://localhost:3001/upload', data)
-
       const post = axios.put(`http://localhost:3001/images/post`, { img_src: res.data.imageUrl, users_id: this.state.loggedUser })
       // post tags to the imagestags table with tag_id (from this.state.tagIds) and img_id (from response from updated images table)
       this.setState({
@@ -95,26 +92,28 @@ class Image extends React.Component {
     } catch (err) {
       console.log(err)
     }
+    console.log(tagsId, imgId)
     this.postTags(tagsId, imgId)
     this.handleResetTags()
   }
 
-
   postTags = async (tagsId, imgId) => {
     if (imgId !== null) {
-
       for (let i = 0; i < tagsId.length; i++) {
         try {
-          const addTagsTOImage = await axios.post(`http://localhost:3001/imageTags/addTagToImage/`, { tag_id: tagsId[i], img_id: imgId })
-          const getallTagsAndIds = await axios.get(`http://localhost:3001/imageTags/`)
+          this.addTagToImage(tagsId[i], imgId)
+        //  const getallTagsAndIds = await axios.get(`http://localhost:3001/imageTags/`)
         } catch (error) {
           console.log(error)
         }
       }
     }
-    this.handleResetTags()
+    //this.handleResetTags()
   }
 
+  addTagToImage = async (tag, img) => {
+    await axios.post(`http://localhost:3001/imageTags/addTagToImage/`, { tag_id: tag, img_id: img})
+  }
 
   handleResetTags = () => {
     this.setState({
@@ -125,9 +124,6 @@ class Image extends React.Component {
       tagStr: "",
     })
   }
-
-
-
   render() {
     let { imagePreviewUrl, tagsName } = this.state;
     let imagePreview = null;
@@ -141,27 +137,21 @@ class Image extends React.Component {
         {/* <div className ="image_stage"> */}
         <p>Upload image</p>
         <form onSubmit={this.handleSubmit}>
-
           <input type="file"
-            onChange={this.handleFileInput} placeholder="" />
+            onChange={this.handleFileInput} placeholder="Write tags with hashtags" />
           <input className="image_submit" type="submit" value="Upload" />
-
-
         </form>
         <ul className="input-tag__tags">
           {tagsName.map((tagsName, i) => (
             <li className="listOfTags" key={tagsName}>
               {tagsName}
             </li>
-
           ))}
-          <li className="input-tag__tags__input"><input type="text" placeholder= "type tag and press Enter" onKeyDown={this.handleAddTag} ref={c => { this.tagInput = c; }} /></li>
+          <li className="input-tag__tags__input"><input type="text" placeholder="type tag and press Enter" onKeyDown={this.inputKeyDown} ref={c => { this.tagInput = c; }} /></li>
         </ul>
         {imagePreview}
       </div>
     );
   }
 }
-
-
 export default Image;

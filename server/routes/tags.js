@@ -2,6 +2,22 @@ const express = require('express');
 const router = express.Router();
 const db = require('./pgExport');
 
+router.get('/max/', async (req, res) => {
+  try{
+    let maxId = await db.any('SELECT MAX(id) FROM tags')
+    res.json({
+      success: true,
+      maxId: maxId
+    })
+  }
+  catch(error) {
+    res.send({
+      success: false,
+      error: 'something went wrong'
+    })
+  }
+})
+
 router.get('/:hashtag', async (req, res) => {
     let hashtagName = req.params.hashtag;
     console.log(hashtagName)
@@ -22,7 +38,6 @@ router.get('/:hashtag', async (req, res) => {
             error: "Hashtag does not exist"
         })
     }
-
 })
 router.get ('/tag/:tag' , async (req,res) => {
     let tagName = req.params.tag
@@ -41,7 +56,7 @@ router.get ('/tag/:tag' , async (req,res) => {
             error: "Hashtag does not exist"
         })
     }
-    
+
 })
 router.post('/tag/:tag', async (req,  res) => {
     let tagName = req.params.tag;
@@ -61,5 +76,4 @@ router.post('/tag/:tag', async (req,  res) => {
         })
     }
 })
-
 module.exports = router;

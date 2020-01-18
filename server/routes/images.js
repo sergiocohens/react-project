@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const db = require('./pgExport');
-
 router.get('/all', async (req, res) => {
    try {
        let images = await db.any(`SELECT * FROM images`);
@@ -17,7 +16,6 @@ router.get('/all', async (req, res) => {
        console.log(error);
    }
 })
-
 router.get('/:id', async (req, res) => {
     let id = req.params.id
    try {
@@ -34,8 +32,6 @@ router.get('/:id', async (req, res) => {
        console.log(error);
    }
 })
-
-
 router.get('/:url', async (req, res) => {
     let url = req.params.img_src
    try {
@@ -52,13 +48,12 @@ router.get('/:url', async (req, res) => {
        console.log(error);
    }
 })
-
 router.put('/post', async (req, res) => {
   try {
       let insertQuery = `
       INSERT INTO images(img_src, users_id)
-      VALUES($1, $2);` 
-      
+      VALUES($1, $2);`
+
       await db.none(insertQuery, [req.body.img_src, req.body.users_id]);
       res.json({
           payload: req.body,
@@ -71,7 +66,6 @@ router.put('/post', async (req, res) => {
       console.log(error)
   }
 })
-
 router.delete('/:id', async (req, res) => {
     let id = req.params.id
     try {
@@ -86,5 +80,4 @@ router.delete('/:id', async (req, res) => {
         console.log(error);
     }
 })
-
 module.exports = router;
