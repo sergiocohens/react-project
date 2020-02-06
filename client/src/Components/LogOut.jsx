@@ -7,6 +7,10 @@ class LogOut extends React.Component {
     super()
   }
 
+  async componentDidMount() {
+    await axios.get('http://localhost:3001/auth/logout')
+  }
+
   render() {
     return (
       <>
