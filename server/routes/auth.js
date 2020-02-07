@@ -46,7 +46,7 @@ router.get('/logout', helpers.loginRequired, (req,res,next) => {
   })
 })
 
-router.get('/isUserLoggedIn', (req,res,next) => {
+router.get('/isUserLoggedIn', helpers.loginRequired, (req,res,next) => {
   res.json({
     payload: req.user,
     msg: 'User is logged in. Session active',
