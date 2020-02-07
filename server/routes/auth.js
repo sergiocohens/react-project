@@ -37,7 +37,7 @@ router.post('/login', passport.authenticate('local'),(req,res,next) => {
   })
 })
 
-router.get('/logout', (req,res,next) => {
+router.get('/logout', helpers.loginRequired, (req,res,next) => {
   req.logOut()
   res.json({
     payload: null,
